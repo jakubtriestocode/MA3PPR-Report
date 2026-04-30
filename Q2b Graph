@@ -1,0 +1,39 @@
+>>> import numpy as np
+>>> import matplotlib.pyplot as plt
+>>> n_r = 10000
+>>> r = np.linspace(0.0, 4.0, n_r)
+>>> iterations_transient = 500
+>>> iterations_lyap = 1000
+>>> x = np.full(n_r, 0.4)
+>>> lyapunov = np.zeros(n_r)
+>>> for _ in range(iterations_transient):
+...     x = r * x * (1 - x)
+...
+>>> for _ in range(iterations_lyap):
+...     abs_derivative = np.abs(r * (1 - 2 * x))
+...     abs_derivative = np.maximum(abs_derivative, 1e-10)
+...     lyapunov += np.log(abs_derivative)
+...     x = r * x * (1 - x)
+...
+>>> lyapunov /= iterations_lyap
+>>> plt.figure(figsize=(10, 5), dpi=150)
+<Figure size 1500x750 with 0 Axes>
+>>> plt.plot(r, lyapunov, color='darkblue', linewidth=0.8)
+[<matplotlib.lines.Line2D object at 0x00000255E7BBAE40>]
+>>> plt.axhline(0, color='red', linewidth=1.2, linestyle='--', label='($\\lambda = 0$)')
+<matplotlib.lines.Line2D object at 0x00000255E7BBACF0>
+>>> plt.title('Figure 1: Lyapunov Exponent of the Logistic Map ($x_0 = 0.4$)', fontsize=14, pad=15)
+Text(0.5, 1.0, 'Figure 1: Lyapunov Exponent of the Logistic Map ($x_0 = 0.4$)')
+>>> plt.xlabel('Parameter $r$', fontsize=12)
+Text(0.5, 0, 'Parameter $r$')
+>>> plt.ylabel('Lyapunov Exponent $\\lambda$', fontsize=12)
+Text(0, 0.5, 'Lyapunov Exponent $\\lambda$')
+>>> plt.xlim(0, 4.0)
+(0.0, 4.0)
+>>> plt.ylim(-3, 1)
+(-3.0, 1.0)
+>>> plt.grid(True, linestyle=':', alpha=0.6)
+>>> plt.legend(loc='upper left')
+<matplotlib.legend.Legend object at 0x00000255E7BBAF90>
+>>> plt.tight_layout()
+>>> plt.show()
