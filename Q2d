@@ -1,0 +1,45 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# --- 1. Parameters & Data Generation ---
+n_steps = 100
+x0 = 0.4
+x0_perturbed = x0 + 1e-5 
+r_values = [3.4, 3.9]
+labels = ['Non-Chaotic', 'Chaotic']
+
+def get_logistic_series(r, x, n):
+    series = [x]
+    for _ in range(n):
+        x = r * x * (1 - x)
+        series.append(x)
+    return series
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 5), dpi=150, sharey=True)
+time_axis = np.arange(101)
+
+plt.suptitle('Figure 3: Perturbing $x_0$ in the Chaotic and Non-Chaotic Series', 
+             fontsize=14)
+
+for i, r in enumerate(r_values):
+    data_original = get_logistic_series(r, x0, 100)
+    data_perturbed = get_logistic_series(r, x0_perturbed, 100)
+    
+    axes[i].plot(time_axis, data_original, color='darkblue', linewidth=1.5, 
+                 marker='o', markersize=3, alpha=0.8, 
+                 label=f'$x_0 = 0.4$')
+    
+    axes[i].plot(time_axis, data_perturbed, color='red', linewidth=1.5, 
+                 marker='o', markersize=3, alpha=0.8, linestyle='--', 
+                 label=f'$x_0 = 0.4 + \\epsilon$')
+    
+    axes[i].set_title(f'{labels[i]} (r = {r})', fontsize=14)
+    axes[i].set_xlabel('Iteration (i)', fontsize=12)
+    axes[i].grid(True, linestyle=':', alpha=0.6)
+    
+    axes[i].legend(fontsize=10, loc='upper left')
+
+axes[0].set_ylabel('$x_i$', fontsize=12)
+
+plt.tight_layout()
+plt.show()
