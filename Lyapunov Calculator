@@ -1,0 +1,19 @@
+import math
+import random
+
+def compute_lyapunov(r, num_iterations=100000):
+    x = random.uniform(0, 1)
+    lyapunov_sum = 0.0
+    for _ in range(num_iterations):
+        derivative = r * (1 - 2 * x)
+        if derivative != 0:
+            lyapunov_sum += math.log(abs(derivative))
+            
+        x = r * x * (1 - x)
+        
+    lyapunov_exponent = lyapunov_sum / num_iterations
+    
+    return lyapunov_exponent
+result=compute_lyapunov(r)
+r= 3.5
+print(f'At r={r}, the Lyapunov exponent is approximately {result}')
