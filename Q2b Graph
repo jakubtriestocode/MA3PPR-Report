@@ -2,17 +2,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 r = np.linspace(0.0, 4.0, 10000) 
 
-iterations_transient = 500
-iterations_lyap = 1000
-
 x = np.full(10000, 0.4)
 
 lyapunov = np.zeros(10000)
 
-for _ in range(iterations_transient):
+for _ in range(500):
     x = r * x * (1 - x)
 
-for _ in range(iterations_lyap):
+for _ in range(1000):
     abs_derivative = np.abs(r * (1 - 2 * x))
     abs_derivative = np.maximum(abs_derivative, 1e-10)
     lyapunov += np.log(abs_derivative)
